@@ -229,6 +229,12 @@ export default function MobileNumerologyApp() {
 
       // 3. Grid Generation
       const dobDigits = dobStr.split('').map(d => parseInt(d)).filter(d => !isNaN(d) && d !== 0);
+
+      // --- ADD Driver (Mulank) and Conductor (Bhagyank) to the Grid Digits ---
+      if (driver !== 0) dobDigits.push(driver);
+      if (conductor !== 0) dobDigits.push(conductor);
+      // -----------------------------------------------------------------------
+
       const gridCounts = {};
       dobDigits.forEach(d => {
         gridCounts[d] = (gridCounts[d] || 0) + 1;
@@ -549,7 +555,7 @@ export default function MobileNumerologyApp() {
                   <div className="flex flex-col md:flex-row gap-8">
                     <div className="w-full md:w-1/3 flex flex-col items-center justify-start pt-2">
                       {renderGrid()}
-                      <p className="text-xs text-center text-gray-400 mt-2">Numbers present in DOB</p>
+                      <p className="text-xs text-center text-gray-400 mt-2">Numbers present in DOB + D/C</p>
                     </div>
 
                     <div className="w-full md:w-2/3">
