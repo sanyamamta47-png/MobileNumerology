@@ -217,7 +217,7 @@ export default function MobileNumerologyApp() {
     setTimeout(() => {
       // 1. Core Calculations
       const dobDate = new Date(formData.dob);
-      const day = dobDate.getDate();
+      const day = dobDate.getDate(); // gets day as integer (1-31)
       const driver = reduceToSingleDigit(day);
       const dobStr = formData.dob.replaceAll('-', '');
       const conductor = reduceToSingleDigit(calculateCompoundSum(dobStr));
@@ -230,10 +230,18 @@ export default function MobileNumerologyApp() {
       // 3. Grid Generation
       const dobDigits = dobStr.split('').map(d => parseInt(d)).filter(d => !isNaN(d) && d !== 0);
 
-      // --- ADD Driver (Mulank) and Conductor (Bhagyank) to the Grid Digits ---
-      if (driver !== 0) dobDigits.push(driver);
-      if (conductor !== 0) dobDigits.push(conductor);
-      // -----------------------------------------------------------------------
+      // --- LOGIC MODIFICATION ---
+      // Rule 1: Add Mulank (Driver) ONLY if birth date is double digit (> 9)
+      // Because if it is single digit (1-9), that number is already in dobDigits
+      if (day > 9 && driver !== 0) {
+        dobDigits.push(driver);
+      }
+
+      // Rule 2: Always add Bhagyank (Conductor)
+      if (conductor !== 0) {
+        dobDigits.push(conductor);
+      }
+      // ---------------------------
 
       const gridCounts = {};
       dobDigits.forEach(d => {
